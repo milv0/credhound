@@ -314,10 +314,22 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _find_data_file(filename: str) -> str:
+    """config.yaml, rules.yaml 경로 탐색"""
+    candidates = [
+        Path(__file__).parent / filename,           # 같은 디렉토리
+        Path(sys.prefix) / 'credhound' / filename,  # pip install 경로
+        Path('.') / filename,                        # 현재 디렉토리
+    ]
+    for p in candidates:
+        if p.exists():
+            return str(p)
+    return filename
+
+
 def init_scanner(args) -> CredentialScannerV2:
-    script_dir = Path(__file__).parent
-    config_path = args.config or str(script_dir / 'config.yaml')
-    rules_path = args.rules or str(script_dir / 'rules.yaml')
+    config_path = args.config or _find_data_file('config.yaml')
+    rules_path = args.rules or _find_data_file('rules.yaml')
     scanner = CredentialScannerV2(config_path=config_path, rules_path=rules_path)
     if args.no_entropy:
         scanner.entropy_analyzer.enabled = False
