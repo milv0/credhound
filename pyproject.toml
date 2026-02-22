@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "credhound"
-version = "2.2.1"
+version = "2.3.0"
 description = "🐕 CredHound - 로컬 파일 보안 credential 탐지 도구 (업계 표준 준수)"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -14,10 +14,13 @@ dependencies = [
 ]
 
 [project.scripts]
-credhound = "main_v2:main"
+credhound = "credhound.cli:main"
 
 [tool.setuptools]
 py-modules = ["scanner_v2", "main_v2"]
 
-[tool.setuptools.data-files]
-"" = ["config.yaml", "rules.yaml"]
+[tool.setuptools.packages.find]
+include = ["credhound*"]
+
+[tool.setuptools.package-data]
+credhound = ["*.yaml"]

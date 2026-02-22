@@ -1,0 +1,133 @@
+# Credential Scanner v2 설정 파일 (글로벌 - 모든 사용자 공통)
+# 개인 환경 설정은 config.local.yaml에 추가하세요
+
+# 스캔 설정
+scan:
+  max_workers: 4  # 병렬 처리 워커 수 (0 = CPU 코어 수)
+  max_file_size: 10485760  # 10MB
+
+# 제외할 디렉토리 (공통)
+exclude_dirs:
+  - node_modules
+  - .git
+  - __pycache__
+  - venv
+  - env
+  - .venv
+  - Library
+  - Applications
+  - System
+  - site-packages
+  - .Trash
+  - .terraform
+  - .next
+  - .nuxt
+  - vendor
+  - target
+  - coverage
+  - .pytest_cache
+  - dist
+  - build
+  - out
+  - .npm
+  - .cache
+  - .local
+  - .config
+  - .vscode
+  - .idea
+  - .gradle
+  - .m2
+  - .cargo
+  - .rustup
+  - .rbenv
+  - .pyenv
+  - .nvm
+  - .docker
+  - .kube
+  - .minikube
+  - .vagrant
+  - .virtualenvs
+  - __MACOSX
+  - .DS_Store
+  - Caches
+  - Cache
+  - tmp
+  - temp
+  - logs
+  - log
+
+# 제외할 파일 패턴 (공통)
+exclude_patterns:
+  - "README.*"
+  - ".*\\.log$"
+  - ".*_history$"
+  - ".*package-lock\\.json$"
+  - ".*yarn\\.lock$"
+  - ".*pnpm-lock\\.yaml$"
+  - ".*Cargo\\.lock$"
+  - ".*Gemfile\\.lock$"
+  - ".*credential_scan_results.*\\.txt$"
+  - ".*scan_results.*\\.json$"
+  - ".*scanner\\.py$"
+  - ".*\\.min\\.js$"
+  - ".*\\.bundle\\.js$"
+  - ".*\\.wasm$"
+  - ".*/out/_next/.*"
+  - ".*/dist/.*"
+  - ".*/build/.*"
+  - ".*rules\\.yaml$"
+
+# 스캔 가능한 파일 확장자
+scannable_extensions:
+  - .txt
+  - .env
+  - .json
+  - .yaml
+  - .yml
+  - .xml
+  - .conf
+  - .config
+  - .ini
+  - .properties
+  - .sh
+  - .bash
+  - .zsh
+  - .py
+  - .js
+  - .ts
+  - .jsx
+  - .tsx
+  - .java
+  - .go
+  - .rs
+  - .rb
+  - .php
+  - .cs
+  - .cpp
+  - .c
+  - .h
+  - .md
+  - .pem
+  - .key
+  - .crt
+  - .cer
+  - .sql
+  - .toml
+  - .kt
+  - .swift
+  - .scala
+  - .clj
+  - .ex
+  - .exs
+
+# 엔트로피 탐지 설정
+entropy:
+  enabled: true
+  threshold: 4.5
+  min_length: 20
+  max_length: 120
+  short_string_threshold: 5.5
+  long_string_threshold: 5.2
+
+# Baseline 파일 경로
+baseline_file: .credscan-baseline.json
