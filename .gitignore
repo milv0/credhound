@@ -29,6 +29,9 @@ LEGAL.md
 # macOS
 .DS_Store
 
+# 배포 스크립트 (내부용)
+release.sh
+
 # IDE
 .vscode/
 .idea/
