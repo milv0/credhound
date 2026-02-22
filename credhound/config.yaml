@@ -55,6 +55,8 @@ exclude_dirs:
   - temp
   - logs
   - log
+  - .oh-my-zsh
+  - .zsh
 
 # 제외할 파일 패턴 (공통)
 exclude_patterns:
@@ -76,6 +78,7 @@ exclude_patterns:
   - ".*/dist/.*"
   - ".*/build/.*"
   - ".*rules\\.yaml$"
+  - ".*/python/lib/python.*/.*\\.py$"
 
 # 스캔 가능한 파일 확장자
 scannable_extensions:

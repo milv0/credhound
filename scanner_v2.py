@@ -273,7 +273,7 @@ _ENTROPY_FP_PATTERNS = [
 class CredentialScannerV2:
     """개선된 Credential Scanner - 업계 표준 준수"""
 
-    VERSION = "2.3.0"
+    VERSION = "2.3.1"
     TOOL_NAME = "credhound"
 
     def __init__(self, config_path: str = 'config.yaml', rules_path: str = 'rules.yaml'):
