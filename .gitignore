@@ -17,6 +17,15 @@ report*.html
 .credscan-baseline.json
 .credscan-cache.json
 
+# 개발 히스토리 (내부용)
+kiro-history.md
+CHANGES.md
+IMPROVEMENTS.md
+REFERENCES.md
+QUICKSTART.md
+COMPLIANCE.md
+LEGAL.md
+
 # macOS
 .DS_Store
 

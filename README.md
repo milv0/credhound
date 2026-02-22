@@ -28,43 +28,43 @@ credhound --path ~ --parallel --format html -o report.html
 
 ```bash
 # 인터랙티브 모드 (HTML 리포트 자동 생성)
-python3 main_v2.py
+python main_v2.py
 
 # 경로 지정
-python3 main_v2.py --path ~/project
+python main_v2.py --path ~/project
 
 # 병렬 + HIGH 이상만
-python3 main_v2.py --path ~ --parallel --severity HIGH
+python main_v2.py --path ~ --parallel --severity HIGH
 ```
 
 ## 출력 형식
 
 ```bash
 # HTML 리포트 (시각적, 권장)
-python3 main_v2.py --path ~ --format html -o report.html
+python main_v2.py --path ~ --format html -o report.html
 
 # JSON (프로그래밍적 소비)
-python3 main_v2.py --path ~ --format json -o results.json
+python main_v2.py --path ~ --format json -o results.json
 
 # SARIF 2.1.0 (GitHub Code Scanning 연동)
-python3 main_v2.py --path ~ --format sarif -o results.sarif
+python main_v2.py --path ~ --format sarif -o results.sarif
 
 # 콘솔 (기본)
-python3 main_v2.py --path ~
+python main_v2.py --path ~
 ```
 
 ## CI/CD 파이프라인
 
 ```bash
 # CI 모드 (비대화형, exit code 반환)
-python3 main_v2.py --path . --ci --severity HIGH
+python main_v2.py --path . --ci --severity HIGH
 # exit 0 = clean, exit 1 = findings, exit 2 = error
 
 # SARIF + CI
-python3 main_v2.py --path . --ci --format sarif -o results.sarif
+python main_v2.py --path . --ci --format sarif -o results.sarif
 
 # Pre-commit 훅 설치
-python3 main_v2.py --install-hook --path .
+python main_v2.py --install-hook --path .
 ```
 
 ## 전체 옵션
@@ -145,6 +145,6 @@ exclude_patterns:
 ## 테스트
 
 ```bash
-python3 -m unittest test_scanner -v
-# 27 tests, 0.26s
+python -m unittest test_scanner -v
+# 33 tests, 0.5s
 ```

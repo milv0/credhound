@@ -677,7 +677,7 @@ if command -v credhound >/dev/null 2>&1; then
     credhound --path "$(git rev-parse --show-toplevel)" \\
         --ci --incremental --severity HIGH
 else
-    python3 -m main_v2 --path "$(git rev-parse --show-toplevel)" \\
+    python -m main_v2 --path "$(git rev-parse --show-toplevel)" \\
         --ci --incremental --severity HIGH
 fi
 
