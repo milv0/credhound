@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+
+# 개인 환경 설정
+config.local.yaml
+
+# 스캔 결과 (credential 포함 가능)
+scan_results/
+results.json
+*.sarif
+report*.html
+.credscan-baseline.json
+.credscan-cache.json
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# 환경
+venv/
+.venv/
+env/
