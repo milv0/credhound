@@ -98,6 +98,22 @@ PASSWORD = "test123"    # pragma: allowlist secret
 | `--rules` | 규칙 파일 경로 | rules.yaml |
 | `--verbose`, `-v` | 상세 로그 출력 | OFF |
 
+## 설정 커스터마이징
+
+`config.yaml` 옆에 `config.local.yaml`을 만들면 자동으로 병합됩니다:
+
+```yaml
+# config.local.yaml (개인 환경 전용, .gitignore에 추가)
+exclude_dirs:
+  - .oh-my-zsh
+  - my-large-folder
+exclude_patterns:
+  - ".*내_특정_파일.*"
+```
+
+- 리스트 값은 기존에 **합쳐지고**, 단일 값은 **덮어씁니다**
+- `config.yaml`은 수정하지 마세요 — 업데이트 시 초기화됩니다
+
 ## 탐지 규칙 (30개)
 
 | 카테고리 | 규칙 | 심각도 |
