@@ -8,7 +8,7 @@ OWASP, SARIF 2.1.0, CWE-798/321 등 업계 표준 준수.
 
 ## 주요 기능
 
-- **30개 탐지 규칙** — AWS, GitHub, Slack, JWT, DB, 패스워드, Private Key 등
+- **29개 탐지 규칙** — AWS, GitHub, Slack, JWT, DB, 패스워드, Private Key 등
 - **엔트로피 분석** — Shannon 엔트로피 기반 미지의 시크릿 탐지
 - **다중 출력** — HTML 리포트, JSON, SARIF 2.1.0, 콘솔
 - **CI/CD 연동** — exit code, 비대화형 모드, pre-commit 훅
@@ -114,7 +114,7 @@ exclude_patterns:
 - 리스트 값은 기존에 **합쳐지고**, 단일 값은 **덮어씁니다**
 - `config.yaml`은 수정하지 마세요 — 업데이트 시 초기화됩니다
 
-## 탐지 규칙 (30개)
+## 탐지 규칙 (29개)
 
 | 카테고리 | 규칙 | 심각도 |
 |---------|------|--------|
