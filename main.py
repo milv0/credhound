@@ -18,7 +18,7 @@ from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskPr
 from rich.prompt import Prompt, Confirm
 from rich.text import Text
 
-from scanner_v2 import CredentialScannerV2, Finding, EXIT_CLEAN, EXIT_FINDINGS, EXIT_ERROR
+from scanner import CredentialScannerV2, Finding, EXIT_CLEAN, EXIT_FINDINGS, EXIT_ERROR
 
 console = Console()
 
@@ -278,23 +278,21 @@ def build_parser() -> argparse.ArgumentParser:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 사용 예시:
-  python main_v2.py                                    # 인터랙티브 모드 (HTML 자동 생성)
-  python main_v2.py --path ~/project --ci              # CI 모드
-  python main_v2.py --path . --format html -o report.html  # HTML 리포트
-  python main_v2.py --path . --format sarif -o results.sarif
-  python main_v2.py --path . --format json -o results.json
-  python main_v2.py --path ~ --parallel --severity HIGH    # 병렬 + HIGH 이상
-  python main_v2.py --path ~ --parallel --group            # 중복 그룹핑
-  python main_v2.py --path . --unmask                      # 마스킹 해제
-  python main_v2.py --path . --cache                       # 변경 파일만 스캔
-  python main_v2.py --path . --incremental                 # Git 변경분만
-  python main_v2.py --install-hook                         # Pre-commit 훅 설치
-  python main_v2.py --update-baseline                      # False positive 관리
-
-  설치 후: credhound --path ~ --parallel --format html -o report.html
+  credhound                                            # 인터랙티브 모드 (HTML 자동 생성)
+  credhound --path ~/project --ci                      # CI 모드
+  credhound --path . --format html -o report.html      # HTML 리포트
+  credhound --path . --format sarif -o results.sarif
+  credhound --path . --format json -o results.json
+  credhound --path ~ --parallel --severity HIGH        # 병렬 + HIGH 이상
+  credhound --path ~ --parallel --group                # 중복 그룹핑
+  credhound --path . --unmask                          # 마스킹 해제
+  credhound --path . --cache                           # 변경 파일만 스캔
+  credhound --path . --incremental                     # Git 변경분만
+  credhound --install-hook                             # Pre-commit 훅 설치
+  credhound --update-baseline                          # False positive 관리
 """
     )
-    parser.add_argument('--version', '-V', action='version', version='credhound 2.3.3')
+    parser.add_argument('--version', '-V', action='version', version='credhound 2.4.0')
     parser.add_argument('--path', '-p', help='스캔할 경로 (기본: 현재 디렉토리)')
     parser.add_argument('--format', '-f', choices=['console', 'json', 'sarif', 'html'], default='console', help='출력 형식 (기본: console)')
     parser.add_argument('--output', '-o', help='결과 저장 파일 경로')
@@ -335,7 +333,7 @@ def init_scanner(args) -> CredentialScannerV2:
     if args.no_entropy:
         scanner.entropy_analyzer.enabled = False
     if args.baseline:
-        from scanner_v2 import BaselineManager
+        from scanner import BaselineManager
         scanner.baseline_manager = BaselineManager(args.baseline)
     return scanner
 

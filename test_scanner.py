@@ -8,7 +8,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(__file__))
-from scanner_v2 import (
+from scanner import (
     Finding, Rule, BaselineManager, EntropyAnalyzer,
     CredentialScannerV2, EXIT_CLEAN, EXIT_FINDINGS, SEVERITY_ORDER
 )
@@ -256,7 +256,7 @@ class TestCredentialScannerV2(unittest.TestCase):
             json.dump({'exclusions': [], 'patterns': ['secret.*']}, f)
             path = f.name
         try:
-            from scanner_v2 import BaselineManager
+            from scanner import BaselineManager
             bm = BaselineManager(path)
             finding = Finding(rule_id='t', rule_name='T', severity='HIGH',
                             file_path='/t', line_number=1, matched_text='secret123')

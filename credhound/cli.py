@@ -14,7 +14,7 @@ def main():
     if os.path.exists(rules_path) and '--rules' not in sys.argv:
         sys.argv.extend(['--rules', rules_path])
 
-    from main_v2 import main as _main
+    from main import main as _main
     _main()
 
 
