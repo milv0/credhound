@@ -20,4 +20,4 @@ credhound = "main_v2:main"
 py-modules = ["scanner_v2", "main_v2"]
 
 [tool.setuptools.data-files]
-"credhound" = ["config.yaml", "rules.yaml"]
+"" = ["config.yaml", "rules.yaml"]
