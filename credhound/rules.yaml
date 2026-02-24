@@ -179,7 +179,7 @@ rules:
     variable_patterns:
       - "(?i)heroku.*key"
     value_patterns:
-      - pattern: "(?i)heroku[_\\s-]*(?:api[_\\s-]*)?key[\"\\s:=]+([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})"
+      - pattern: "(?i)heroku[_\\s-]{0,5}(?:api[_\\s-]{0,5})?key[\"\\s:=]+([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})"
         name: "Heroku API Key"
 
   - id: digitalocean_token

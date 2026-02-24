@@ -91,6 +91,20 @@ class Finding:
         return hashlib.sha256(key.encode()).hexdigest()[:16]
 
 
+def _regex_safe_search(pattern: re.Pattern, text: str, timeout_chars: int = 500_000) -> Optional[re.Match]:
+    """ReDoS 방어: 입력 길이를 제한하여 catastrophic backtracking 방지"""
+    if len(text) > timeout_chars:
+        text = text[:timeout_chars]
+    return pattern.search(text)
+
+
+def _regex_safe_finditer(pattern: re.Pattern, text: str, timeout_chars: int = 500_000):
+    """ReDoS 방어: finditer에 입력 길이 제한 적용"""
+    if len(text) > timeout_chars:
+        text = text[:timeout_chars]
+    return pattern.finditer(text)
+
+
 class Rule:
     """탐지 규칙 클래스"""
 
@@ -131,14 +145,14 @@ class Rule:
     def is_variable_match(self, var_name: str) -> bool:
         if not var_name:
             return False
-        return any(p.search(var_name) for p in self.variable_patterns)
+        return any(_regex_safe_search(p, var_name) for p in self.variable_patterns)
 
     def is_excluded_value(self, value: str) -> bool:
-        return any(p.search(value) for p in self.value_exclusions)
+        return any(_regex_safe_search(p, value) for p in self.value_exclusions)
 
     def check_value_patterns(self, value: str) -> Optional[str]:
         for pattern_def in self.value_patterns:
-            if pattern_def['pattern'].search(value):
+            if _regex_safe_search(pattern_def['pattern'], value):
                 return pattern_def['name']
         return None
 
@@ -273,7 +287,7 @@ _ENTROPY_FP_PATTERNS = [
 class CredentialScannerV2:
     """개선된 Credential Scanner - 업계 표준 준수"""
 
-    VERSION = "2.4.0"
+    VERSION = "2.6.0"
     TOOL_NAME = "credhound"
 
     def __init__(self, config_path: str = 'config.yaml', rules_path: str = 'rules.yaml'):
@@ -390,10 +404,25 @@ class CredentialScannerV2:
                                     pass
         return results
 
-    def scan_file_content(self, file_path: Path) -> Tuple[List[Finding], Optional[str]]:
+    def _validate_path(self, file_path: Path, scan_root: Optional[Path] = None) -> bool:
+        """Path Traversal 방어: 파일이 스캔 루트 내에 있는지 검증"""
+        try:
+            resolved = file_path.resolve()
+            if scan_root is not None:
+                root_resolved = scan_root.resolve()
+                if not str(resolved).startswith(str(root_resolved) + os.sep) and resolved != root_resolved:
+                    logger.warning(f"경로 검증 실패 (스캔 루트 외부): {file_path}")
+                    return False
+            return True
+        except (OSError, ValueError):
+            return False
+
+    def scan_file_content(self, file_path: Path, scan_root: Optional[Path] = None) -> Tuple[List[Finding], Optional[str]]:
         """파일 내용 스캔 (단일 파일)"""
         findings = []
         if file_path.is_symlink():
+            return findings, None
+        if not self._validate_path(file_path, scan_root):
             return findings, None
         if self.should_exclude_file(file_path):
             with self._lock:
@@ -416,26 +445,29 @@ class CredentialScannerV2:
 
         max_file_size = self.config.get('scan', {}).get('max_file_size', 10485760)
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
-                # TOCTOU 방지: 파일 핸들에서 직접 크기 확인
-                f.seek(0, 2)
-                file_size = f.tell()
+            # TOCTOU 방지: stat으로 먼저 크기 확인
+            try:
+                file_size = file_path.stat().st_size
                 if file_size > max_file_size:
                     with self._lock:
                         self.stats['files_excluded'] += 1
                     return findings, None
-                f.seek(0)
-                content = f.read()
+            except OSError:
+                pass  # stat 실패 시 읽기 시도
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read(max_file_size + 1)
+                if len(content) > max_file_size:
+                    with self._lock:
+                        self.stats['files_excluded'] += 1
+                    return findings, None
         except UnicodeDecodeError:
             try:
                 with open(file_path, 'r', encoding='latin-1') as f:
-                    f.seek(0, 2)
-                    if f.tell() > max_file_size:
+                    content = f.read(max_file_size + 1)
+                    if len(content) > max_file_size:
                         with self._lock:
                             self.stats['files_excluded'] += 1
                         return findings, None
-                    f.seek(0)
-                    content = f.read()
             except (PermissionError, OSError) as e:
                 return findings, f"파일 읽기 실패: {e}"
         except PermissionError:
@@ -451,7 +483,7 @@ class CredentialScannerV2:
 
         for rule in self.rules:
             for pattern_def in rule.value_patterns:
-                for match in pattern_def['pattern'].finditer(content):
+                for match in _regex_safe_finditer(pattern_def['pattern'], content):
                     matched_text = match.group(0)
                     if not rule.is_excluded_value(matched_text):
                         line_num = content[:match.start()].count('\n') + 1
@@ -515,10 +547,11 @@ class CredentialScannerV2:
         files_to_scan = self._collect_files(scan_path)
         self.stats['files_found'] = len(files_to_scan)
         seen = set()
+        scan_root = Path(scan_path).resolve()
 
         for idx, file_path in enumerate(files_to_scan, 1):
             try:
-                findings, error = self.scan_file_content(file_path)
+                findings, error = self.scan_file_content(file_path, scan_root=scan_root)
                 if error:
                     self.stats['files_failed'] += 1
                     failed_files.append((str(file_path), error))
@@ -556,11 +589,12 @@ class CredentialScannerV2:
         seen = set()
         max_workers = self.config.get('scan', {}).get('max_workers', 4) or os.cpu_count()
         completed = 0
+        scan_root = Path(scan_path).resolve()
         executor = ThreadPoolExecutor(max_workers=max_workers)
         futures = {}
 
         try:
-            futures = {executor.submit(self.scan_file_content, fp): fp for fp in files_to_scan}
+            futures = {executor.submit(self.scan_file_content, fp, scan_root): fp for fp in files_to_scan}
             for future in as_completed(futures):
                 completed += 1
                 try:
@@ -860,13 +894,14 @@ exit 0
         for f in sorted(findings, key=lambda x: SEVERITY_ORDER.get(x.severity, 3)):
             text = Finding._mask_text(f.matched_text) if mask else f.matched_text
             color = sev_colors.get(f.severity, '#6c757d')
+            esc = _html_mod.escape
             rows += f"""<tr>
-                <td><span style="background:{color};color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">{f.severity}</span></td>
-                <td>{_html_mod.escape(f.rule_name)}</td>
-                <td style="font-family:monospace;font-size:13px">{_html_mod.escape(text)}</td>
-                <td style="font-size:13px">{_html_mod.escape(str(f.file_path))}</td>
-                <td>{f.line_number}</td>
-                <td>{f.confidence}</td>
+                <td><span style="background:{color};color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">{esc(f.severity)}</span></td>
+                <td>{esc(f.rule_name)}</td>
+                <td style="font-family:monospace;font-size:13px">{esc(text)}</td>
+                <td style="font-size:13px">{esc(str(f.file_path))}</td>
+                <td>{int(f.line_number)}</td>
+                <td>{esc(f.confidence)}</td>
             </tr>"""
 
         chart_bars = ""
@@ -875,12 +910,12 @@ exit 0
             if count > 0:
                 max_c = max(by_severity.values()) or 1
                 width = int((count / max_c) * 200)
-                chart_bars += f'<div style="margin:4px 0"><span style="display:inline-block;width:80px;font-weight:bold;color:{sev_colors[sev]}">{sev}</span><span style="display:inline-block;width:{width}px;height:20px;background:{sev_colors[sev]};border-radius:3px"></span> <b>{count}</b></div>'
+                chart_bars += f'<div style="margin:4px 0"><span style="display:inline-block;width:80px;font-weight:bold;color:{sev_colors[sev]}">{_html_mod.escape(sev)}</span><span style="display:inline-block;width:{width}px;height:20px;background:{sev_colors[sev]};border-radius:3px"></span> <b>{int(count)}</b></div>'
 
         # 룰별 요약 테이블
         rule_rows = ""
         for rule_id, count in sorted(by_rule.items(), key=lambda x: -x[1]):
-            rule_rows += f"<tr><td>{rule_id}</td><td>{count}</td></tr>"
+            rule_rows += f"<tr><td>{_html_mod.escape(str(rule_id))}</td><td>{int(count)}</td></tr>"
 
         # 파일별 요약
         file_counts = {}
@@ -888,7 +923,7 @@ exit 0
             file_counts[f.file_path] = file_counts.get(f.file_path, 0) + 1
         file_rows = ""
         for fp, count in sorted(file_counts.items(), key=lambda x: -x[1])[:15]:
-            file_rows += f"<tr><td style='font-size:13px'>{_html_mod.escape(str(fp))}</td><td>{count}</td></tr>"
+            file_rows += f"<tr><td style='font-size:13px'>{_html_mod.escape(str(fp))}</td><td>{int(count)}</td></tr>"
 
         html_output = f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8"><title>CredHound Report</title>
