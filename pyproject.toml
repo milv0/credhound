@@ -4,15 +4,19 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "credhound"
-version = "2.8.3"
+version = "2.8.4"
 description = "🐕 CredHound - 로컬 파일 보안 credential 탐지 도구 (업계 표준 준수)"
 readme = "README.md"
-authors = [{name = "Mingyu Park", email = "uqwe00@gmail.com"}]
+authors = [{name = "Mingyu Park"}]
+maintainers = [{email = "uqwe00@gmail.com"}]
 requires-python = ">=3.9"
 dependencies = [
     "rich>=13.0.0",
     "pyyaml>=6.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/milv0/credhound"
 
 [project.scripts]
 credhound = "credhound.cli:main"
