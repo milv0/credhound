@@ -40,3 +40,7 @@ release.sh
 venv/
 .venv/
 env/
+
+# Scan results
+result/
+!result/.gitkeep
