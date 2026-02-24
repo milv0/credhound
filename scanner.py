@@ -92,14 +92,14 @@ class Finding:
         return hashlib.sha256(key.encode()).hexdigest()[:16]
 
 
-def _regex_safe_search(pattern: re.Pattern, text: str, timeout_chars: int = 500_000) -> Optional[re.Match]:
+def _regex_safe_search(pattern: re.Pattern, text: str, timeout_chars: int = 10_000_000) -> Optional[re.Match]:
     """ReDoS 방어: 입력 길이를 제한하여 catastrophic backtracking 방지"""
     if len(text) > timeout_chars:
         text = text[:timeout_chars]
     return pattern.search(text)
 
 
-def _regex_safe_finditer(pattern: re.Pattern, text: str, timeout_chars: int = 500_000):
+def _regex_safe_finditer(pattern: re.Pattern, text: str, timeout_chars: int = 10_000_000):
     """ReDoS 방어: finditer에 입력 길이 제한 적용"""
     if len(text) > timeout_chars:
         text = text[:timeout_chars]
@@ -288,7 +288,7 @@ _ENTROPY_FP_PATTERNS = [
 class CredentialScannerV2:
     """개선된 Credential Scanner - 업계 표준 준수"""
 
-    VERSION = "2.7.0"
+    VERSION = "2.8.0"
     TOOL_NAME = "credhound"
 
     def __init__(self, config_path: str = 'config.yaml', rules_path: str = 'rules.yaml'):

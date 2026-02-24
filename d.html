@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>CredHound Report</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;margin:40px;background:#f8f9fa}
+h1{color:#212529} h2{color:#495057;border-bottom:2px solid #dee2e6;padding-bottom:8px}
+table{border-collapse:collapse;width:100%;margin-bottom:30px} th,td{border:1px solid #dee2e6;padding:8px;text-align:left}
+th{background:#343a40;color:#fff} tr:nth-child(even){background:#f8f9fa} tr:hover{background:#e9ecef}
+.stats{display:flex;gap:20px;margin:20px 0;flex-wrap:wrap} .stat-card{background:#fff;padding:20px;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.1);flex:1;text-align:center;min-width:150px}
+.stat-card h3{margin:0;color:#6c757d;font-size:14px} .stat-card p{margin:8px 0 0;font-size:28px;font-weight:bold;color:#212529}
+details{margin:10px 0;background:#fff;border-radius:8px;padding:15px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+summary{cursor:pointer;font-weight:bold;font-size:16px;color:#495057}
+</style></head><body>
+<h1>🐕 CredHound Report</h1>
+<p>스캔 시간: 2026-02-24 10:20:32 | 마스킹: ON</p>
+<div class="stats">
+    <div class="stat-card"><h3>총 발견</h3><p>111</p></div>
+    <div class="stat-card"><h3>스캔 파일</h3><p>125,637</p></div>
+    <div class="stat-card"><h3>스캔 시간</h3><p>117.9초</p></div>
+    <div class="stat-card"><h3>CRITICAL</h3><p style="color:#dc3545">26</p></div>
+    <div class="stat-card"><h3>HIGH</h3><p style="color:#fd7e14">7</p></div>
+</div>
+<h2>위험도별 분포</h2>
+<div style="margin:4px 0"><span style="display:inline-block;width:80px;font-weight:bold;color:#dc3545">CRITICAL</span><span style="display:inline-block;width:80px;height:20px;background:#dc3545;border-radius:3px"></span> <b>26</b></div><div style="margin:4px 0"><span style="display:inline-block;width:80px;font-weight:bold;color:#fd7e14">HIGH</span><span style="display:inline-block;width:21px;height:20px;background:#fd7e14;border-radius:3px"></span> <b>7</b></div><div style="margin:4px 0"><span style="display:inline-block;width:80px;font-weight:bold;color:#ffc107">MEDIUM</span><span style="display:inline-block;width:40px;height:20px;background:#ffc107;border-radius:3px"></span> <b>13</b></div><div style="margin:4px 0"><span style="display:inline-block;width:80px;font-weight:bold;color:#28a745">LOW</span><span style="display:inline-block;width:200px;height:20px;background:#28a745;border-radius:3px"></span> <b>65</b></div>
+<details><summary>📊 룰별 요약</summary>
+<table><tr><th>규칙</th><th>건수</th></tr><tr><td>high_entropy</td><td>65</td></tr><tr><td>aws_access_key</td><td>19</td></tr><tr><td>jwt_token</td><td>12</td></tr><tr><td>private_key</td><td>7</td></tr><tr><td>slack_token</td><td>3</td></tr><tr><td>password_in_code</td><td>3</td></tr><tr><td>generic_api_key</td><td>1</td></tr><tr><td>generic_password_url</td><td>1</td></tr></table>
+</details>
+<details><summary>📁 파일별 요약 (상위 15개)</summary>
+<table><tr><th>파일</th><th>건수</th></tr><tr><td style='font-size:13px'>/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-core-3.232.0/lib/aws-sdk-ssooidc/client.rb</td><td>18</td></tr><tr><td style='font-size:13px'>/Users/mingyupk/Desktop/Security/iam/iam-aws-doc.txt</td><td>9</td></tr><tr><td style='font-size:13px'>/Users/mingyupk/Desktop/Project/Bedrock_Agent_IAM_Policy/mingyupk_tools/data/iam-aws-doc.txt</td><td>9</td></tr><tr><td style='font-size:13px'>/Users/mingyupk/Desktop/Project/IAM_Policy_Check/data/iam-aws-doc.txt</td><td>9</td></tr><tr><td style='font-size:13px'>/Users/mingyupk/Documents/Obsidian Vault/Case/IAM/RestAPI 의 Cross Account 기술 문의.md</td><td>6</td></tr><tr><td style='font-size:13px'>/Users/mingyupk/Desktop/quantbrainz/.env</td><td>5</td></tr><tr><td style='font-size:13px'>/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/jruby10.x/lib/ruby/gems/shared/gems/aws-sdk-s3-1.209.0/lib/aws-sdk-s3/client.rb</td><td>5</td></tr><tr><td style='font-size:13px'>/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-s3-1.209.0/lib/aws-sdk-s3/client.rb</td><td>5</td></tr><tr><td style='font-size:13px'>/Users/mingyupk/.aws/sso/cache/f1004d1a73dbf74c84cddd8393e979cd4eafd263.json</td><td>4</td></tr><tr><td style='font-size:13px'>/Users/mingyupk/Documents/Obsidian Vault/Case/Ctrail/aws sdk 호출 이력 확인.md</td><td>3</td></tr><tr><td style='font-size:13px'>/Users/mingyupk/.aws/sso/cache/8d2b0fde5e21ff68372eab34c39d735b23a92c63.json</td><td>3</td></tr><tr><td style='font-size:13px'>/Users/mingyupk/.aws/login/cache/f8f093969322303306951e0c03f004c7bcc55200b1669dcaff8d71d9b4ffec5c.json</td><td>3</td></tr><tr><td style='font-size:13px'>/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/3.2.0/rubygems/gemcutter_utilities.rb</td><td>2</td></tr><tr><td style='font-size:13px'>/Users/mingyupk/Documents/Obsidian Vault/Case/IAM/SAML 로그인 불가.md</td><td>2</td></tr><tr><td style='font-size:13px'>/Users/mingyupk/Documents/Obsidian Vault/Case/IAM/1205 IAM Role 최대 세션 지속 시간.md</td><td>2</td></tr></table>
+</details>
+<h2>탐지 결과 (111건)</h2>
+<table><tr><th>심각도</th><th>규칙</th><th>탐지 값</th><th>파일</th><th>라인</th><th>신뢰도</th></tr>
+<tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>Private Key</td>
+                <td style="font-family:monospace;font-size:13px">----****----</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/key/mingyupk-keyPair.pem</td>
+                <td>1</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>Private Key</td>
+                <td style="font-family:monospace;font-size:13px">----****----</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/key/mingyupk-key.pem</td>
+                <td>1</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>Private Key</td>
+                <td style="font-family:monospace;font-size:13px">----****----</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/key/mingyupk-ec2-key.pem</td>
+                <td>1</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>Private Key</td>
+                <td style="font-family:monospace;font-size:13px">----****----</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/key/mingyupk+1-ec2-key.pem</td>
+                <td>1</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>AWS 액세스 키</td>
+                <td style="font-family:monospace;font-size:13px">ASIA****EHHS</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/creds/arn_aws_iam_865827691132_role-ToolboxUser.json</td>
+                <td>1</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>Private Key</td>
+                <td style="font-family:monospace;font-size:13px">----****----</td>
+                <td style="font-size:13px">/Users/mingyupk/rolesanywhere-throttle-test/us-west-2/client-private-key-uswest2.pem</td>
+                <td>1</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>Private Key</td>
+                <td style="font-family:monospace;font-size:13px">----****----</td>
+                <td style="font-size:13px">/Users/mingyupk/rolesanywhere-throttle-test/ap-northeast-2/client-private-key.pem</td>
+                <td>1</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>AWS 액세스 키</td>
+                <td style="font-family:monospace;font-size:13px">AKIA****JKVD</td>
+                <td style="font-size:13px">/Users/mingyupk/Documents/Obsidian Vault/Case/KMS/0106 외부 키 가져오기 진행 시 에러 로그 확인 요청.md</td>
+                <td>155</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>AWS 액세스 키</td>
+                <td style="font-family:monospace;font-size:13px">AKIA****JKVD</td>
+                <td style="font-size:13px">/Users/mingyupk/Documents/Obsidian Vault/Case/Ctrail/aws sdk 호출 이력 확인.md</td>
+                <td>18</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>AWS 액세스 키</td>
+                <td style="font-family:monospace;font-size:13px">ASIA****77CG</td>
+                <td style="font-size:13px">/Users/mingyupk/Documents/Obsidian Vault/Case/Ctrail/aws sdk 호출 이력 확인.md</td>
+                <td>176</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>AWS 액세스 키</td>
+                <td style="font-family:monospace;font-size:13px">ASIA****PMK6</td>
+                <td style="font-size:13px">/Users/mingyupk/Documents/Obsidian Vault/Case/Ctrail/aws sdk 호출 이력 확인.md</td>
+                <td>256</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>AWS 액세스 키</td>
+                <td style="font-family:monospace;font-size:13px">ASIA****ZTQT</td>
+                <td style="font-size:13px">/Users/mingyupk/Documents/Obsidian Vault/Case/IAM/1205 IAM Role 최대 세션 지속 시간.md</td>
+                <td>54</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>AWS 액세스 키</td>
+                <td style="font-family:monospace;font-size:13px">ASIA****O736</td>
+                <td style="font-size:13px">/Users/mingyupk/Documents/Obsidian Vault/Case/IAM/1205 IAM Role 최대 세션 지속 시간.md</td>
+                <td>82</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>AWS 액세스 키</td>
+                <td style="font-family:monospace;font-size:13px">AKIA****5TGN</td>
+                <td style="font-size:13px">/Users/mingyupk/Documents/Obsidian Vault/Case/IAM/RestAPI 의 Cross Account 기술 문의.md</td>
+                <td>15</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>AWS 액세스 키</td>
+                <td style="font-family:monospace;font-size:13px">ASIA****OZPR</td>
+                <td style="font-size:13px">/Users/mingyupk/Documents/Obsidian Vault/Case/IAM/RestAPI 의 Cross Account 기술 문의.md</td>
+                <td>21</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>AWS 액세스 키</td>
+                <td style="font-family:monospace;font-size:13px">ASIA****G7DX</td>
+                <td style="font-size:13px">/Users/mingyupk/Documents/Obsidian Vault/Case/IAM/RestAPI 의 Cross Account 기술 문의.md</td>
+                <td>30</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>AWS 액세스 키</td>
+                <td style="font-family:monospace;font-size:13px">ASIA****G7DX</td>
+                <td style="font-size:13px">/Users/mingyupk/Documents/Obsidian Vault/Case/IAM/RestAPI 의 Cross Account 기술 문의.md</td>
+                <td>37</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>AWS 액세스 키</td>
+                <td style="font-family:monospace;font-size:13px">ASIA****G7DX</td>
+                <td style="font-size:13px">/Users/mingyupk/Documents/Obsidian Vault/Case/IAM/RestAPI 의 Cross Account 기술 문의.md</td>
+                <td>57</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>AWS 액세스 키</td>
+                <td style="font-family:monospace;font-size:13px">AWS_****iYSN</td>
+                <td style="font-size:13px">/Users/mingyupk/Documents/Obsidian Vault/Case/IAM/RestAPI 의 Cross Account 기술 문의.md</td>
+                <td>37</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>AWS 액세스 키</td>
+                <td style="font-family:monospace;font-size:13px">ASIA****UHFA</td>
+                <td style="font-size:13px">/Users/mingyupk/Documents/Obsidian Vault/Case/IAM/Delete root user credentials 작업.md</td>
+                <td>15</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>AWS 액세스 키</td>
+                <td style="font-family:monospace;font-size:13px">AKIA****JKVD</td>
+                <td style="font-size:13px">/Users/mingyupk/Documents/Obsidian Vault/Case/IAM/액세스키 사용 여부 확인.md</td>
+                <td>26</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>AWS 액세스 키</td>
+                <td style="font-family:monospace;font-size:13px">AKIA****5TGN</td>
+                <td style="font-size:13px">/Users/mingyupk/Documents/Obsidian Vault/Case/IAM/s3 bucket 의 policy  정책수정.md</td>
+                <td>484</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>AWS 액세스 키</td>
+                <td style="font-family:monospace;font-size:13px">ASIA****E2ZD</td>
+                <td style="font-size:13px">/Users/mingyupk/Documents/Obsidian Vault/Case/IAM/IAM 키 삭제 불가 ? (Role).md</td>
+                <td>41</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>AWS 액세스 키</td>
+                <td style="font-family:monospace;font-size:13px">ASIA****HSXA</td>
+                <td style="font-size:13px">/Users/mingyupk/.aws/cli/cache/4ad789dae56f1ee24da46ea885ae9502eeed2d4c.json</td>
+                <td>1</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>AWS 액세스 키</td>
+                <td style="font-family:monospace;font-size:13px">ASIA****FTFA</td>
+                <td style="font-size:13px">/Users/mingyupk/.aws/login/cache/f8f093969322303306951e0c03f004c7bcc55200b1669dcaff8d71d9b4ffec5c.json</td>
+                <td>1</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#dc3545;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">CRITICAL</span></td>
+                <td>Private Key</td>
+                <td style="font-family:monospace;font-size:13px">----****----</td>
+                <td style="font-size:13px">/Users/mingyupk/.aws/login/cache/f8f093969322303306951e0c03f004c7bcc55200b1669dcaff8d71d9b4ffec5c.json</td>
+                <td>1</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#fd7e14;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">HIGH</span></td>
+                <td>Slack 토큰</td>
+                <td style="font-family:monospace;font-size:13px">xoxb****5680</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/quantbrainz/.env</td>
+                <td>9</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#fd7e14;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">HIGH</span></td>
+                <td>Slack 토큰</td>
+                <td style="font-family:monospace;font-size:13px">xoxb****5680</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/quantbrainz/.env</td>
+                <td>19</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#fd7e14;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">HIGH</span></td>
+                <td>URL 내 패스워드</td>
+                <td style="font-family:monospace;font-size:13px">://a****prox</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/amzn-mcp/0.3.7/.assets-extracted/qcontext/scripts/mlpigeon-installation.script.md</td>
+                <td>33</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#fd7e14;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">HIGH</span></td>
+                <td>하드코딩된 패스워드</td>
+                <td style="font-family:monospace;font-size:13px">pass****us@&quot;</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/net-ftp-0.2.1/lib/net/ftp.rb</td>
+                <td>631</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#fd7e14;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">HIGH</span></td>
+                <td>하드코딩된 패스워드</td>
+                <td style="font-family:monospace;font-size:13px">Pass****t, &quot;</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/3.2.0/rubygems/gemcutter_utilities.rb</td>
+                <td>134</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#fd7e14;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">HIGH</span></td>
+                <td>하드코딩된 패스워드</td>
+                <td style="font-family:monospace;font-size:13px">Pass****ay &quot;</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/3.2.0/rubygems/gemcutter_utilities.rb</td>
+                <td>163</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#fd7e14;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">HIGH</span></td>
+                <td>Slack 토큰</td>
+                <td style="font-family:monospace;font-size:13px">xoxb****5680</td>
+                <td style="font-size:13px">/Users/mingyupk/Documents/Obsidian Vault/QBZ/QBZ.md</td>
+                <td>67</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#ffc107;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">MEDIUM</span></td>
+                <td>JWT 토큰</td>
+                <td style="font-family:monospace;font-size:13px">eyJ0****mLWZ</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/quantbrainz/.env</td>
+                <td>30</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#ffc107;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">MEDIUM</span></td>
+                <td>Generic API 키</td>
+                <td style="font-family:monospace;font-size:13px">API_****kpdy</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/quantbrainz/.env</td>
+                <td>27</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#ffc107;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">MEDIUM</span></td>
+                <td>JWT 토큰</td>
+                <td style="font-family:monospace;font-size:13px">eyJh****iOiI</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-core-3.232.0/lib/aws-sdk-ssooidc/client.rb</td>
+                <td>741</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#ffc107;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">MEDIUM</span></td>
+                <td>JWT 토큰</td>
+                <td style="font-family:monospace;font-size:13px">eyJ0****yLjA</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-core-3.232.0/lib/aws-sdk-ssooidc/client.rb</td>
+                <td>777</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#ffc107;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">MEDIUM</span></td>
+                <td>JWT 토큰</td>
+                <td style="font-family:monospace;font-size:13px">eyJh****iOiI</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-core-3.232.0/lib/aws-sdk-ssooidc/client.rb</td>
+                <td>789</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#ffc107;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">MEDIUM</span></td>
+                <td>JWT 토큰</td>
+                <td style="font-family:monospace;font-size:13px">eyJh****iOiI</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-core-3.232.0/lib/aws-sdk-ssooidc/client.rb</td>
+                <td>817</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#ffc107;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">MEDIUM</span></td>
+                <td>JWT 토큰</td>
+                <td style="font-family:monospace;font-size:13px">eyJ0****LmFt</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/creds/telemetry-jwt.txt</td>
+                <td>1</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#ffc107;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">MEDIUM</span></td>
+                <td>JWT 토큰</td>
+                <td style="font-family:monospace;font-size:13px">eyJr****YWx1</td>
+                <td style="font-size:13px">/Users/mingyupk/.aws/sso/cache/8d2b0fde5e21ff68372eab34c39d735b23a92c63.json</td>
+                <td>1</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#ffc107;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">MEDIUM</span></td>
+                <td>JWT 토큰</td>
+                <td style="font-family:monospace;font-size:13px">eyJr****YWx1</td>
+                <td style="font-size:13px">/Users/mingyupk/.aws/sso/cache/f1004d1a73dbf74c84cddd8393e979cd4eafd263.json</td>
+                <td>1</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#ffc107;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">MEDIUM</span></td>
+                <td>JWT 토큰</td>
+                <td style="font-family:monospace;font-size:13px">eyJr****YWx1</td>
+                <td style="font-size:13px">/Users/mingyupk/.aws/sso/cache/06df7ec90decadd0c5dd4ed2f245b2a59d1d8826.json</td>
+                <td>3</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#ffc107;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">MEDIUM</span></td>
+                <td>JWT 토큰</td>
+                <td style="font-family:monospace;font-size:13px">eyJr****YWx1</td>
+                <td style="font-size:13px">/Users/mingyupk/.aws/sso/cache/aws-toolkit-vscode-client-id-us-east-1-0b2230f4cad1075a19fde83bc165db23c378c150b1548257fcdd26dbbb77c0e2.json</td>
+                <td>1</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#ffc107;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">MEDIUM</span></td>
+                <td>JWT 토큰</td>
+                <td style="font-family:monospace;font-size:13px">eyJr****YWx1</td>
+                <td style="font-size:13px">/Users/mingyupk/.aws/sso/cache/5ae6628ee9baa18e5b7b2935bdd283ac5a2c9b39.json</td>
+                <td>1</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#ffc107;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">MEDIUM</span></td>
+                <td>JWT 토큰</td>
+                <td style="font-family:monospace;font-size:13px">eyJr****.eyJ</td>
+                <td style="font-size:13px">/Users/mingyupk/.aws/login/cache/f8f093969322303306951e0c03f004c7bcc55200b1669dcaff8d71d9b4ffec5c.json</td>
+                <td>1</td>
+                <td>HIGH</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">nUhV****0Fkb</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Security/iam/iam-aws-doc.txt</td>
+                <td>22458</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">QrmG****75YU</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Security/iam/iam-aws-doc.txt</td>
+                <td>24498</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">9HFv****qBAz</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Security/iam/iam-aws-doc.txt</td>
+                <td>24499</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">QrmG****75YU</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Security/iam/iam-aws-doc.txt</td>
+                <td>24661</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">9HFv****qBAz</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Security/iam/iam-aws-doc.txt</td>
+                <td>24662</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">2Bub****dH0v</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Security/iam/iam-aws-doc.txt</td>
+                <td>26825</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">nUhV****0Fkb</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Security/iam/iam-aws-doc.txt</td>
+                <td>69758</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">ITxO****m2nr</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Security/iam/iam-aws-doc.txt</td>
+                <td>69771</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">L6v1****wcjg</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Security/iam/iam-aws-doc.txt</td>
+                <td>89669</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">xRwb****gKuw</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/quantbrainz/.env</td>
+                <td>30</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">nUhV****0Fkb</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Project/Bedrock_Agent_IAM_Policy/mingyupk_tools/data/iam-aws-doc.txt</td>
+                <td>22458</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">QrmG****75YU</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Project/Bedrock_Agent_IAM_Policy/mingyupk_tools/data/iam-aws-doc.txt</td>
+                <td>24498</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">9HFv****qBAz</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Project/Bedrock_Agent_IAM_Policy/mingyupk_tools/data/iam-aws-doc.txt</td>
+                <td>24499</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">QrmG****75YU</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Project/Bedrock_Agent_IAM_Policy/mingyupk_tools/data/iam-aws-doc.txt</td>
+                <td>24661</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">9HFv****qBAz</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Project/Bedrock_Agent_IAM_Policy/mingyupk_tools/data/iam-aws-doc.txt</td>
+                <td>24662</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">2Bub****dH0v</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Project/Bedrock_Agent_IAM_Policy/mingyupk_tools/data/iam-aws-doc.txt</td>
+                <td>26825</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">nUhV****0Fkb</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Project/Bedrock_Agent_IAM_Policy/mingyupk_tools/data/iam-aws-doc.txt</td>
+                <td>69758</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">ITxO****m2nr</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Project/Bedrock_Agent_IAM_Policy/mingyupk_tools/data/iam-aws-doc.txt</td>
+                <td>69771</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">L6v1****wcjg</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Project/Bedrock_Agent_IAM_Policy/mingyupk_tools/data/iam-aws-doc.txt</td>
+                <td>89669</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">nUhV****0Fkb</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Project/IAM_Policy_Check/data/iam-aws-doc.txt</td>
+                <td>22458</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">QrmG****75YU</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Project/IAM_Policy_Check/data/iam-aws-doc.txt</td>
+                <td>24498</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">9HFv****qBAz</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Project/IAM_Policy_Check/data/iam-aws-doc.txt</td>
+                <td>24499</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">QrmG****75YU</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Project/IAM_Policy_Check/data/iam-aws-doc.txt</td>
+                <td>24661</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">9HFv****qBAz</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Project/IAM_Policy_Check/data/iam-aws-doc.txt</td>
+                <td>24662</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">2Bub****dH0v</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Project/IAM_Policy_Check/data/iam-aws-doc.txt</td>
+                <td>26825</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">nUhV****0Fkb</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Project/IAM_Policy_Check/data/iam-aws-doc.txt</td>
+                <td>69758</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">ITxO****m2nr</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Project/IAM_Policy_Check/data/iam-aws-doc.txt</td>
+                <td>69771</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">L6v1****wcjg</td>
+                <td style="font-size:13px">/Users/mingyupk/Desktop/Project/IAM_Policy_Check/data/iam-aws-doc.txt</td>
+                <td>89669</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">xadc****Eg--</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/jruby10.x/lib/ruby/gems/shared/gems/aws-sdk-s3-1.209.0/lib/aws-sdk-s3/client.rb</td>
+                <td>766</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">7YPB****Eg--</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/jruby10.x/lib/ruby/gems/shared/gems/aws-sdk-s3-1.209.0/lib/aws-sdk-s3/client.rb</td>
+                <td>1223</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">CInX****9Q--</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/jruby10.x/lib/ruby/gems/shared/gems/aws-sdk-s3-1.209.0/lib/aws-sdk-s3/client.rb</td>
+                <td>12636</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">CInX****9Q--</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/jruby10.x/lib/ruby/gems/shared/gems/aws-sdk-s3-1.209.0/lib/aws-sdk-s3/client.rb</td>
+                <td>12678</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">xadc****Eg--</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/jruby10.x/lib/ruby/gems/shared/gems/aws-sdk-s3-1.209.0/lib/aws-sdk-s3/client.rb</td>
+                <td>21195</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">xadc****Eg--</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-s3-1.209.0/lib/aws-sdk-s3/client.rb</td>
+                <td>766</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">7YPB****Eg--</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-s3-1.209.0/lib/aws-sdk-s3/client.rb</td>
+                <td>1223</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">CInX****9Q--</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-s3-1.209.0/lib/aws-sdk-s3/client.rb</td>
+                <td>12636</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">CInX****9Q--</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-s3-1.209.0/lib/aws-sdk-s3/client.rb</td>
+                <td>12678</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">xadc****Eg--</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-s3-1.209.0/lib/aws-sdk-s3/client.rb</td>
+                <td>21195</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">aoal****Akc0</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-core-3.232.0/lib/aws-sdk-ssooidc/client.rb</td>
+                <td>561</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">aorv****Akc0</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-core-3.232.0/lib/aws-sdk-ssooidc/client.rb</td>
+                <td>563</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">aorv****Akc0</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-core-3.232.0/lib/aws-sdk-ssooidc/client.rb</td>
+                <td>573</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">aoal****Akc0</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-core-3.232.0/lib/aws-sdk-ssooidc/client.rb</td>
+                <td>581</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">aorv****Akc0</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-core-3.232.0/lib/aws-sdk-ssooidc/client.rb</td>
+                <td>583</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">aoal****Akc0</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-core-3.232.0/lib/aws-sdk-ssooidc/client.rb</td>
+                <td>736</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">aorv****Akc0</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-core-3.232.0/lib/aws-sdk-ssooidc/client.rb</td>
+                <td>743</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">aorv****Akc0</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-core-3.232.0/lib/aws-sdk-ssooidc/client.rb</td>
+                <td>757</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">aoal****Akc0</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-core-3.232.0/lib/aws-sdk-ssooidc/client.rb</td>
+                <td>762</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">aorv****Akc0</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-core-3.232.0/lib/aws-sdk-ssooidc/client.rb</td>
+                <td>765</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">aoal****Akc0</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-core-3.232.0/lib/aws-sdk-ssooidc/client.rb</td>
+                <td>784</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">aorv****Akc0</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-core-3.232.0/lib/aws-sdk-ssooidc/client.rb</td>
+                <td>791</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">aoak****Akc0</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-core-3.232.0/lib/aws-sdk-ssooidc/client.rb</td>
+                <td>806</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">aoal****Akc0</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/gems/3.2.0/gems/aws-sdk-core-3.232.0/lib/aws-sdk-ssooidc/client.rb</td>
+                <td>812</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">VBmZ****f8E6</td>
+                <td style="font-size:13px">/Users/mingyupk/.toolbox/tools/brazilcli/2.0.215590.0/ruby3.2.x/lib/ruby/3.2.0/openssl/ssl.rb</td>
+                <td>41</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">ABCD****6789</td>
+                <td style="font-size:13px">/Users/mingyupk/.kiro/extensions/amazonwebservices.amazon-q-vscode-1.110.0-universal/resources/language-server/servers/aws-lsp-codewhisperer.js</td>
+                <td>2</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">JrVh****rnWT</td>
+                <td style="font-size:13px">/Users/mingyupk/Documents/Obsidian Vault/Case/IAM/SAML 로그인 불가.md</td>
+                <td>15</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">JrVh****rnWT</td>
+                <td style="font-size:13px">/Users/mingyupk/Documents/Obsidian Vault/Case/IAM/SAML 로그인 불가.md</td>
+                <td>31</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">aoaA****Bkc0</td>
+                <td style="font-size:13px">/Users/mingyupk/.aws/sso/cache/8d2b0fde5e21ff68372eab34c39d735b23a92c63.json</td>
+                <td>1</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">aorA****Bkc0</td>
+                <td style="font-size:13px">/Users/mingyupk/.aws/sso/cache/8d2b0fde5e21ff68372eab34c39d735b23a92c63.json</td>
+                <td>1</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">aoaA****Bbe1</td>
+                <td style="font-size:13px">/Users/mingyupk/.aws/sso/cache/f1004d1a73dbf74c84cddd8393e979cd4eafd263.json</td>
+                <td>1</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">rHwr****MQ5I</td>
+                <td style="font-size:13px">/Users/mingyupk/.aws/sso/cache/f1004d1a73dbf74c84cddd8393e979cd4eafd263.json</td>
+                <td>1</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">aorA****Bbe1</td>
+                <td style="font-size:13px">/Users/mingyupk/.aws/sso/cache/f1004d1a73dbf74c84cddd8393e979cd4eafd263.json</td>
+                <td>1</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">D37B****VmhS</td>
+                <td style="font-size:13px">/Users/mingyupk/.aws/sso/cache/06df7ec90decadd0c5dd4ed2f245b2a59d1d8826.json</td>
+                <td>3</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">rHwr****MQ5I</td>
+                <td style="font-size:13px">/Users/mingyupk/.aws/sso/cache/5ae6628ee9baa18e5b7b2935bdd283ac5a2c9b39.json</td>
+                <td>1</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">aoaA****Bkc0</td>
+                <td style="font-size:13px">/Users/mingyupk/.aws/sso/cache/kiro-auth-token.json</td>
+                <td>2</td>
+                <td>LOW</td>
+            </tr><tr>
+                <td><span style="background:#28a745;color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">LOW</span></td>
+                <td>높은 엔트로피 문자열 (잠재적 키)</td>
+                <td style="font-family:monospace;font-size:13px">aorA****Bkc0</td>
+                <td style="font-size:13px">/Users/mingyupk/.aws/sso/cache/kiro-auth-token.json</td>
+                <td>3</td>
+                <td>LOW</td>
+            </tr>
+</table>
+<p style="color:#6c757d;margin-top:40px;font-size:12px">Generated by credhound v2.6.0</p>
+</body></html>
