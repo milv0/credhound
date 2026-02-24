@@ -12,7 +12,6 @@ import time
 import base64
 import yaml
 import hashlib
-import html as _html_mod
 import signal
 import logging
 import subprocess
@@ -42,17 +41,19 @@ CWE_MAP = {
     'github_token': 'CWE-798', 'slack_token': 'CWE-798',
     'google_api_key': 'CWE-798', 'generic_api_key': 'CWE-798',
     'database_connection': 'CWE-798', 'password_in_code': 'CWE-798',
-    'generic_password_url': 'CWE-798', 'jwt_token': 'CWE-798',
+    'generic_password_url': 'CWE-798', 'jwt_token': 'CWE-522',
     'azure_key': 'CWE-798', 'stripe_key': 'CWE-798',
     'twilio_key': 'CWE-798', 'sendgrid_key': 'CWE-798',
     'hashicorp_vault_token': 'CWE-798', 'gitlab_token': 'CWE-798',
-    'shopify_token': 'CWE-798', 'high_entropy': 'CWE-798',
+    'shopify_token': 'CWE-798', 'high_entropy': 'CWE-200',
 }
 
 # Remediation 가이드
 REMEDIATION = {
     'CWE-798': '환경 변수 또는 시크릿 매니저(AWS Secrets Manager, HashiCorp Vault)로 이동하세요. 노출된 credential은 즉시 폐기(revoke)하고 새로 발급하세요.',
     'CWE-321': '암호화 키를 KMS(AWS KMS, GCP KMS) 또는 HSM으로 이동하세요. 하드코딩된 키는 즉시 교체하세요.',
+    'CWE-522': '토큰을 안전한 저장소에 보관하고, 전송 시 TLS를 사용하세요. 만료된 토큰은 즉시 폐기하세요.',
+    'CWE-200': '민감 정보가 로그, 소스코드, 설정 파일에 노출되지 않도록 하세요. 시크릿 매니저를 사용하세요.',
 }
 
 
@@ -287,7 +288,7 @@ _ENTROPY_FP_PATTERNS = [
 class CredentialScannerV2:
     """개선된 Credential Scanner - 업계 표준 준수"""
 
-    VERSION = "2.6.0"
+    VERSION = "2.7.0"
     TOOL_NAME = "credhound"
 
     def __init__(self, config_path: str = 'config.yaml', rules_path: str = 'rules.yaml'):
@@ -739,112 +740,13 @@ exit 0
 
     def export_json(self, findings: List[Finding], file_results: Dict = None, filepath: str = None, mask: bool = True) -> str:
         """JSON 형식으로 내보내기"""
-        # 룰별/심각도별 요약 통계
-        by_rule = {}
-        by_severity = {'CRITICAL': 0, 'HIGH': 0, 'MEDIUM': 0, 'LOW': 0}
-        for f in findings:
-            by_rule[f.rule_id] = by_rule.get(f.rule_id, 0) + 1
-            by_severity[f.severity] = by_severity.get(f.severity, 0) + 1
-
-        output = {
-            'tool': {'name': 'credhound', 'version': self.VERSION},
-            'scan_time': datetime.now().isoformat(),
-            'masked': mask,
-            'statistics': self.stats.copy(),
-            'summary': {
-                'total_findings': len(findings),
-                'by_rule': by_rule,
-                'by_severity': by_severity,
-            },
-            'findings': [f.to_dict(mask=mask) for f in findings],
-        }
-        if file_results:
-            output['file_pattern_findings'] = file_results
-        output['statistics'].pop('failed_files_list', None)
-        json_str = json.dumps(output, indent=2, ensure_ascii=False, default=str)
-        if filepath:
-            Path(filepath).write_text(json_str, encoding='utf-8')
-        return json_str
+        from reporter import export_json as _export_json
+        return _export_json(findings, self.stats.copy(), self.VERSION, file_results, filepath, mask)
 
     def export_sarif(self, findings: List[Finding], filepath: str = None, mask: bool = True) -> str:
         """SARIF 2.1.0 형식으로 내보내기 (OASIS 표준)"""
-        # 룰 정의 수집
-        rule_map = {}
-        for f in findings:
-            if f.rule_id not in rule_map:
-                cwe_id = CWE_MAP.get(f.rule_id)
-                rule_def = {
-                    'id': f.rule_id,
-                    'name': f.rule_name,
-                    'shortDescription': {'text': f.rule_name},
-                    'defaultConfiguration': {
-                        'level': 'error' if f.severity in ('CRITICAL', 'HIGH') else 'warning' if f.severity == 'MEDIUM' else 'note'
-                    },
-                    'properties': {'severity': f.severity},
-                }
-                if cwe_id:
-                    rule_def['relationships'] = [{
-                        'target': {'id': cwe_id, 'guid': cwe_id,
-                                   'toolComponent': {'name': 'CWE'}},
-                        'kinds': ['superset']
-                    }]
-                    cwe_num = cwe_id.split('-')[1]
-                    rule_def['helpUri'] = f'https://cwe.mitre.org/data/definitions/{cwe_num}.html'
-                    remediation = REMEDIATION.get(cwe_id, '')
-                    if remediation:
-                        rule_def['help'] = {'text': remediation}
-                rule_map[f.rule_id] = rule_def
-
-        # SARIF 결과
-        results = []
-        for f in findings:
-            display_text = Finding._mask_text(f.matched_text[:50]) if mask else f.matched_text[:50]
-            result = {
-                'ruleId': f.rule_id,
-                'level': 'error' if f.severity in ('CRITICAL', 'HIGH') else 'warning' if f.severity == 'MEDIUM' else 'note',
-                'message': {'text': f"[{f.severity}] {f.rule_name}: {display_text}..."},
-                'fingerprints': {
-                    'credhound/v1': f.get_hash()
-                },
-                'locations': [{
-                    'physicalLocation': {
-                        'artifactLocation': {'uri': f.file_path},
-                        'region': {'startLine': f.line_number}
-                    }
-                }],
-                'properties': {
-                    'confidence': f.confidence,
-                    'severity': f.severity
-                }
-            }
-            if f.entropy is not None:
-                result['properties']['entropy'] = f.entropy
-            results.append(result)
-
-        sarif = {
-            '$schema': 'https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json',
-            'version': '2.1.0',
-            'runs': [{
-                'tool': {
-                    'driver': {
-                        'name': 'credhound',
-                        'version': self.VERSION,
-                        'informationUri': 'https://github.com/credhound',
-                        'rules': list(rule_map.values())
-                    }
-                },
-                'results': results,
-                'invocations': [{
-                    'executionSuccessful': True,
-                    'endTimeUtc': datetime.now(timezone.utc).isoformat()
-                }]
-            }]
-        }
-
-        sarif_str = json.dumps(sarif, indent=2, ensure_ascii=False, default=str)
-        if filepath:
-            Path(filepath).write_text(sarif_str, encoding='utf-8')
-        return sarif_str
+        from reporter import export_sarif as _export_sarif
+        return _export_sarif(findings, self.VERSION, filepath, mask)
 
     # ── 유틸리티 ───────────────────────────────────────────────
 
@@ -882,88 +784,8 @@ exit 0
 
     def export_html(self, findings: List[Finding], file_results: Dict = None, filepath: str = None, mask: bool = True) -> str:
         """HTML 리포트 생성"""
-        by_rule = {}
-        by_severity = {'CRITICAL': 0, 'HIGH': 0, 'MEDIUM': 0, 'LOW': 0}
-        for f in findings:
-            by_rule[f.rule_id] = by_rule.get(f.rule_id, 0) + 1
-            by_severity[f.severity] = by_severity.get(f.severity, 0) + 1
-
-        sev_colors = {'CRITICAL': '#dc3545', 'HIGH': '#fd7e14', 'MEDIUM': '#ffc107', 'LOW': '#28a745'}
-
-        rows = ""
-        for f in sorted(findings, key=lambda x: SEVERITY_ORDER.get(x.severity, 3)):
-            text = Finding._mask_text(f.matched_text) if mask else f.matched_text
-            color = sev_colors.get(f.severity, '#6c757d')
-            esc = _html_mod.escape
-            rows += f"""<tr>
-                <td><span style="background:{color};color:#fff;padding:2px 8px;border-radius:4px;font-size:12px">{esc(f.severity)}</span></td>
-                <td>{esc(f.rule_name)}</td>
-                <td style="font-family:monospace;font-size:13px">{esc(text)}</td>
-                <td style="font-size:13px">{esc(str(f.file_path))}</td>
-                <td>{int(f.line_number)}</td>
-                <td>{esc(f.confidence)}</td>
-            </tr>"""
-
-        chart_bars = ""
-        for sev in ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW']:
-            count = by_severity[sev]
-            if count > 0:
-                max_c = max(by_severity.values()) or 1
-                width = int((count / max_c) * 200)
-                chart_bars += f'<div style="margin:4px 0"><span style="display:inline-block;width:80px;font-weight:bold;color:{sev_colors[sev]}">{_html_mod.escape(sev)}</span><span style="display:inline-block;width:{width}px;height:20px;background:{sev_colors[sev]};border-radius:3px"></span> <b>{int(count)}</b></div>'
-
-        # 룰별 요약 테이블
-        rule_rows = ""
-        for rule_id, count in sorted(by_rule.items(), key=lambda x: -x[1]):
-            rule_rows += f"<tr><td>{_html_mod.escape(str(rule_id))}</td><td>{int(count)}</td></tr>"
-
-        # 파일별 요약
-        file_counts = {}
-        for f in findings:
-            file_counts[f.file_path] = file_counts.get(f.file_path, 0) + 1
-        file_rows = ""
-        for fp, count in sorted(file_counts.items(), key=lambda x: -x[1])[:15]:
-            file_rows += f"<tr><td style='font-size:13px'>{_html_mod.escape(str(fp))}</td><td>{int(count)}</td></tr>"
-
-        html_output = f"""<!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>CredHound Report</title>
-<style>
-body{{font-family:-apple-system,BlinkMacSystemFont,sans-serif;margin:40px;background:#f8f9fa}}
-h1{{color:#212529}} h2{{color:#495057;border-bottom:2px solid #dee2e6;padding-bottom:8px}}
-table{{border-collapse:collapse;width:100%;margin-bottom:30px}} th,td{{border:1px solid #dee2e6;padding:8px;text-align:left}}
-th{{background:#343a40;color:#fff}} tr:nth-child(even){{background:#f8f9fa}} tr:hover{{background:#e9ecef}}
-.stats{{display:flex;gap:20px;margin:20px 0;flex-wrap:wrap}} .stat-card{{background:#fff;padding:20px;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.1);flex:1;text-align:center;min-width:150px}}
-.stat-card h3{{margin:0;color:#6c757d;font-size:14px}} .stat-card p{{margin:8px 0 0;font-size:28px;font-weight:bold;color:#212529}}
-details{{margin:10px 0;background:#fff;border-radius:8px;padding:15px;box-shadow:0 1px 3px rgba(0,0,0,.1)}}
-summary{{cursor:pointer;font-weight:bold;font-size:16px;color:#495057}}
-</style></head><body>
-<h1>🐕 CredHound Report</h1>
-<p>스캔 시간: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | 마스킹: {'ON' if mask else 'OFF'}</p>
-<div class="stats">
-    <div class="stat-card"><h3>총 발견</h3><p>{len(findings)}</p></div>
-    <div class="stat-card"><h3>스캔 파일</h3><p>{self.stats.get('files_scanned', 0):,}</p></div>
-    <div class="stat-card"><h3>스캔 시간</h3><p>{self.stats.get('scan_time', 0):.1f}초</p></div>
-    <div class="stat-card"><h3>CRITICAL</h3><p style="color:#dc3545">{by_severity['CRITICAL']}</p></div>
-    <div class="stat-card"><h3>HIGH</h3><p style="color:#fd7e14">{by_severity['HIGH']}</p></div>
-</div>
-<h2>위험도별 분포</h2>
-{chart_bars}
-<details><summary>📊 룰별 요약</summary>
-<table><tr><th>규칙</th><th>건수</th></tr>{rule_rows}</table>
-</details>
-<details><summary>📁 파일별 요약 (상위 15개)</summary>
-<table><tr><th>파일</th><th>건수</th></tr>{file_rows}</table>
-</details>
-<h2>탐지 결과 ({len(findings)}건)</h2>
-<table><tr><th>심각도</th><th>규칙</th><th>탐지 값</th><th>파일</th><th>라인</th><th>신뢰도</th></tr>
-{rows}
-</table>
-<p style="color:#6c757d;margin-top:40px;font-size:12px">Generated by credhound v{self.VERSION}</p>
-</body></html>"""
-
-        if filepath:
-            Path(filepath).write_text(html_output, encoding='utf-8')
-        return html_output
+        from reporter import export_html as _export_html
+        return _export_html(findings, self.stats.copy(), self.VERSION, file_results, filepath, mask)
 
     def load_cache(self, cache_path: str = '.credscan-cache.json') -> Dict:
         """스캔 캐시 로드 (mtime 기반)"""
