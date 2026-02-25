@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "credhound"
-version = "2.8.6"
+version = "2.8.7"
 description = "🐕 CredHound - 로컬 파일 보안 credential 탐지 도구 (업계 표준 준수)"
 readme = "README.md"
 authors = [{name = "Mingyu Park", email = "uqwe00@gmail.com"}]

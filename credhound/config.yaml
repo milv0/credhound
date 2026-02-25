@@ -8,55 +8,80 @@ scan:
 
 # 제외할 디렉토리 (공통)
 exclude_dirs:
-  - node_modules
-  - .git
-  - __pycache__
-  - venv
-  - env
-  - .venv
-  - Library
-  - Applications
-  - System
-  - site-packages
-  - .Trash
-  - .terraform
-  - .next
-  - .nuxt
-  - vendor
-  - target
-  - coverage
-  - .pytest_cache
-  - dist
-  - build
-  - out
-  - .npm
-  - .cache
-  - .local
-  - .config
-  - .vscode
-  - .idea
-  - .gradle
-  - .m2
-  - .cargo
-  - .rustup
-  - .rbenv
-  - .pyenv
-  - .nvm
-  - .docker
-  - .kube
-  - .minikube
-  - .vagrant
-  - .virtualenvs
-  - __MACOSX
-  - .DS_Store
-  - Caches
-  - Cache
-  - tmp
-  - temp
-  - logs
-  - log
-  - .oh-my-zsh
-  - .zsh
+  # ── 패키지 매니저 / 의존성 ──
+  - node_modules      # npm/yarn 의존성 — 서드파티 코드, 스캔 불필요
+  - site-packages     # pip 설치 패키지 — 서드파티 라이브러리 소스
+  - vendor            # Go/PHP/Ruby 의존성 디렉토리
+  - .npm              # npm 글로벌 캐시
+
+  # ── 버전 관리 ──
+  - .git              # Git 내부 객체 — 바이너리 데이터, false positive 다수
+
+  # ── 빌드 산출물 / 캐시 ──
+  - __pycache__       # Python 바이트코드 캐시
+  - dist              # 빌드 배포 산출물
+  - build             # 빌드 출력 디렉토리
+  - out               # 컴파일 출력 디렉토리
+  - target            # Java/Rust 빌드 출력
+  - coverage          # 테스트 커버리지 리포트
+  - .pytest_cache     # pytest 캐시
+  - .cache            # 범용 캐시 디렉토리
+  - Caches            # macOS 앱 캐시
+  - Cache             # 범용 캐시 디렉토리
+
+  # ── 가상환경 ──
+  - venv              # Python 가상환경
+  - env               # Python 가상환경 (대체 이름)
+  - .venv             # Python 가상환경 (숨김)
+  - .virtualenvs      # virtualenvwrapper 가상환경
+
+  # ── 언어/런타임 매니저 ──
+  - .rbenv            # Ruby 버전 매니저 — 설치된 Ruby 바이너리/gem
+  - .pyenv            # Python 버전 매니저 — 설치된 Python 바이너리
+  - .nvm              # Node.js 버전 매니저 — 설치된 Node 바이너리
+  - .cargo            # Rust 패키지 매니저 캐시 + 바이너리
+  - .rustup           # Rust 툴체인 설치 경로
+  - .gradle           # Gradle 빌드 캐시 + 래퍼
+  - .m2               # Maven 로컬 저장소
+
+  # ── IaC / 컨테이너 ──
+  - .terraform        # Terraform 프로바이더 플러그인 + 상태 캐시
+  - .docker           # Docker CLI 설정 + 캐시
+  - .kube             # Kubernetes 설정 (context, 인증 정보는 별도 탐지)
+  - .minikube         # Minikube VM/컨테이너 데이터
+  - .vagrant          # Vagrant VM 메타데이터
+
+  # ── 프론트엔드 프레임워크 ──
+  - .next             # Next.js 빌드 캐시
+  - .nuxt             # Nuxt.js 빌드 캐시
+
+  # ── IDE / 에디터 ──
+  - .vscode           # VS Code 설정 — 사용자 환경 설정
+  - .idea             # JetBrains IDE 설정
+
+  # ── macOS 시스템 ──
+  - Library           # macOS 시스템 라이브러리 — OS 내부 파일
+  - Applications      # macOS 앱 번들 — 바이너리 + 리소스
+  - System            # macOS 시스템 디렉토리
+  - .Trash            # macOS 휴지통
+  - __MACOSX          # macOS ZIP 아카이브 메타데이터
+  - .DS_Store         # macOS Finder 메타데이터
+
+  # ── 임시 / 로그 ──
+  - tmp               # 임시 파일
+  - temp              # 임시 파일 (대체 이름)
+  - logs              # 로그 디렉토리
+  - log               # 로그 디렉토리 (대체 이름)
+
+  # ── 쉘 / 터미널 ──
+  - .oh-my-zsh        # Oh My Zsh 프레임워크 — 서드파티 플러그인/테마
+  - .zsh              # Zsh 설정/플러그인
+
+  # ── 로컬 설정 / 도구 ──
+  - .local             # XDG 로컬 데이터 — 앱별 캐시/데이터
+  - .config            # XDG 설정 디렉토리 — 앱별 설정 파일
+  - .toolbox           # Amazon 내부 도구 설치 경로 — 서드파티 SDK 소스 포함
+  - sso                # AWS SSO 캐시 — 자동 생성 임시 토큰 (하드코딩 아님)
 
 # 제외할 파일 패턴 (공통)
 exclude_patterns:
