@@ -82,9 +82,6 @@ exclude_dirs:
   - .config            # XDG 설정 디렉토리 — 앱별 설정 파일
   - .toolbox           # Amazon 내부 도구 설치 경로 — 서드파티 SDK 소스 포함
   - sso                # AWS SSO 캐시 — 자동 생성 임시 토큰 (하드코딩 아님)
-  - cli                # AWS CLI 캐시 (~/.aws/cli/cache/) — 임시 세션 토큰
-  - login              # AWS SSO 로그인 캐시 (~/.aws/login/cache/) — 임시 인증 정보
-  - extensions         # IDE 확장 설치 경로 — 서드파티 확장 내부 코드
 
 # 제외할 파일 패턴 (공통)
 exclude_patterns:
@@ -93,6 +90,8 @@ exclude_patterns:
   - ".*_history$"
   - ".*package-lock\\.json$"
   - ".*yarn\\.lock$"
+  - ".*\\.aws/cli/cache/.*"       # AWS CLI 임시 세션 토큰 캐시 — 자동 생성, 하드코딩 아님
+  - ".*\\.aws/login/cache/.*"     # AWS SSO 로그인 캐시 — 자동 생성 임시 인증 정보
   - ".*pnpm-lock\\.yaml$"
   - ".*Cargo\\.lock$"
   - ".*Gemfile\\.lock$"
