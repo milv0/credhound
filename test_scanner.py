@@ -19,24 +19,24 @@ class TestFinding(unittest.TestCase):
         self.finding = Finding(
             rule_id='aws_access_key', rule_name='AWS 액세스 키',
             severity='CRITICAL', file_path='/test/file.py',
-            line_number=10, matched_text='AKIA00TESTHOUND00FAKE',
+            line_number=10, matched_text='AKIA00TESTHOUND00FAKE',  # credhound:ignore
             confidence='HIGH'
         )
 
     def test_to_dict_masked(self):
         d = self.finding.to_dict(mask=True)
-        self.assertEqual(d['matched_text'], 'AKIA****FAKE')
+        self.assertEqual(d['matched_text'], 'AKIA****FAKE')  # credhound:ignore
 
     def test_to_dict_unmasked(self):
         d = self.finding.to_dict(mask=False)
-        self.assertEqual(d['matched_text'], 'AKIA00TESTHOUND00FAKE')
+        self.assertEqual(d['matched_text'], 'AKIA00TESTHOUND00FAKE')  # credhound:ignore
 
     def test_mask_short_text(self):
         self.assertEqual(Finding._mask_text('abc'), 'abc****')
         self.assertEqual(Finding._mask_text('short12'), 'sho****')
 
     def test_mask_long_text(self):
-        self.assertEqual(Finding._mask_text('AKIA00TESTHOUND00FAKE'), 'AKIA****FAKE')
+        self.assertEqual(Finding._mask_text('AKIA00TESTHOUND00FAKE'), 'AKIA****FAKE')  # credhound:ignore
 
     def test_get_hash(self):
         h = self.finding.get_hash()
@@ -56,8 +56,8 @@ class TestRule(unittest.TestCase):
             'id': 'aws_access_key', 'name': 'AWS Key', 'severity': 'CRITICAL',
             'value_patterns': [{'name': 'AKIA', 'pattern': 'AKIA[0-9A-Z]{16}'}]
         })
-        self.assertEqual(rule.check_value_patterns('AKIA00TESTHOUND00FAKE'), 'AKIA')
-        self.assertIsNone(rule.check_value_patterns('not_a_key'))
+        self.assertEqual(rule.check_value_patterns('AKIA00TESTHOUND00FAKE'), 'AKIA')  # credhound:ignore
+        self.assertIsNone(rule.check_value_patterns('not_a_key'))  # credhound:ignore
 
     def test_value_exclusion(self):
         rule = Rule({
@@ -65,8 +65,8 @@ class TestRule(unittest.TestCase):
             'value_patterns': [{'name': 'key', 'pattern': 'AKIA[0-9A-Z]{16}'}],
             'value_exclusions': ['AKIAIOSFODNN7EXAMPLE']
         })
-        self.assertTrue(rule.is_excluded_value('AKIAIOSFODNN7EXAMPLE'))
-        self.assertFalse(rule.is_excluded_value('AKIA00TESTHOUND00FAKE'))
+        self.assertTrue(rule.is_excluded_value('AKIAIOSFODNN7EXAMPLE'))  # credhound:ignore
+        self.assertFalse(rule.is_excluded_value('AKIA00TESTHOUND00FAKE'))  # credhound:ignore
 
     def test_invalid_regex(self):
         # 잘못된 정규식이 에러 없이 건너뛰어지는지
@@ -168,18 +168,18 @@ class TestCredentialScannerV2(unittest.TestCase):
 
     def test_export_json(self):
         f = Finding(rule_id='test', rule_name='Test', severity='HIGH',
-                    file_path='/t', line_number=1, matched_text='AKIA00TESTHOUND00FAKE')
+                    file_path='/t', line_number=1, matched_text='AKIA00TESTHOUND00FAKE')  # credhound:ignore
         result = json.loads(self.scanner.export_json([f], mask=True))
         self.assertEqual(result['tool']['name'], 'credhound')
         self.assertTrue(result['masked'])
-        self.assertIn('****', result['findings'][0]['matched_text'])
+        self.assertIn('****', result['findings'][0]['matched_text'])  # credhound:ignore
 
     def test_export_json_unmasked(self):
         f = Finding(rule_id='test', rule_name='Test', severity='HIGH',
-                    file_path='/t', line_number=1, matched_text='AKIA00TESTHOUND00FAKE')
+                    file_path='/t', line_number=1, matched_text='AKIA00TESTHOUND00FAKE')  # credhound:ignore
         result = json.loads(self.scanner.export_json([f], mask=False))
         self.assertFalse(result['masked'])
-        self.assertEqual(result['findings'][0]['matched_text'], 'AKIA00TESTHOUND00FAKE')
+        self.assertEqual(result['findings'][0]['matched_text'], 'AKIA00TESTHOUND00FAKE')  # credhound:ignore
 
     def test_export_sarif(self):
         f = Finding(rule_id='test', rule_name='Test', severity='HIGH',
@@ -190,11 +190,11 @@ class TestCredentialScannerV2(unittest.TestCase):
 
     def test_export_html(self):
         f = Finding(rule_id='test', rule_name='Test', severity='HIGH',
-                    file_path='/t', line_number=1, matched_text='AKIA00TESTHOUND00FAKE')
+                    file_path='/t', line_number=1, matched_text='AKIA00TESTHOUND00FAKE')  # credhound:ignore
         html = self.scanner.export_html([f], mask=True)
         self.assertIn('CredHound Report', html)
-        self.assertIn('AKIA****FAKE', html)
-        self.assertNotIn('AKIA00TESTHOUND00FAKE', html)
+        self.assertIn('AKIA****FAKE', html)  # credhound:ignore
+        self.assertNotIn('AKIA00TESTHOUND00FAKE', html)  # credhound:ignore
 
     def test_group_findings(self):
         findings = [
@@ -207,7 +207,7 @@ class TestCredentialScannerV2(unittest.TestCase):
 
     def test_scan_file_content(self):
         with tempfile.NamedTemporaryFile(suffix='.py', delete=False, mode='w') as f:
-            f.write('AWS_KEY = "AKIA00TESTHOUND00FAKE"\n')
+            f.write('AWS_KEY = "AKIA00TESTHOUND00FAKE"\n')  # credhound:ignore
             path = f.name
         try:
             findings, error = self.scanner.scan_file_content(Path(path))
@@ -234,7 +234,7 @@ class TestCredentialScannerV2(unittest.TestCase):
         """symlink 파일이 스캔에서 제외되는지 확인"""
         with tempfile.TemporaryDirectory() as tmpdir:
             real_file = Path(tmpdir) / 'real.py'
-            real_file.write_text('AWS_KEY = "AKIA00TESTHOUND00FAKE"\n')
+            real_file.write_text('AWS_KEY = "AKIA00TESTHOUND00FAKE"\n')  # credhound:ignore
             link_file = Path(tmpdir) / 'link.py'
             link_file.symlink_to(real_file)
             findings, error = self.scanner.scan_file_content(link_file)
@@ -278,7 +278,7 @@ class TestCredentialScannerV2(unittest.TestCase):
         """SARIF 2.1.0 준수 검증 — fingerprints, CWE, remediation, schema"""
         f = Finding(rule_id='aws_access_key', rule_name='AWS 액세스 키',
                     severity='CRITICAL', file_path='/test.py',
-                    line_number=10, matched_text='AKIA00TESTHOUND00FAKE')
+                    line_number=10, matched_text='AKIA00TESTHOUND00FAKE')  # credhound:ignore
         sarif = json.loads(self.scanner.export_sarif([f]))
         run = sarif['runs'][0]
         rule = run['tool']['driver']['rules'][0]
@@ -300,7 +300,7 @@ class TestCredentialScannerV2(unittest.TestCase):
         """인라인 허용목록 (credhound:ignore) 테스트"""
         with tempfile.NamedTemporaryFile(suffix='.py', delete=False, mode='w') as f:
             f.write('AWS_KEY = "AKIA00TESTHOUND00FAKE"  # credhound:ignore\n')
-            f.write('AWS_KEY2 = "AKIA00TESTHOUND00FAKE"\n')
+            f.write('AWS_KEY2 = "AKIA00TESTHOUND00FAKE"\n')  # credhound:ignore
             path = f.name
         try:
             findings, error = self.scanner.scan_file_content(Path(path))

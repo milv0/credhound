@@ -90,6 +90,7 @@ exclude_patterns:
   - ".*\\.aws/cli/cache/.*"       # AWS CLI 임시 세션 토큰 캐시 — 자동 생성, 하드코딩 아님
   - ".*\\.aws/login/cache/.*"     # AWS SSO 로그인 캐시 — 자동 생성 임시 인증 정보
   - ".*\\.aws/sso/.*"             # AWS SSO 캐시 — 자동 생성 임시 토큰
+  - ".*\\.toolbox/.*"             # Amazon 내부 도구 설치 경로 — 서드파티 SDK 소스
   - ".*pnpm-lock\\.yaml$"
   - ".*Cargo\\.lock$"
   - ".*Gemfile\\.lock$"
