@@ -148,9 +148,10 @@ scannable_extensions:
   - .ex
   - .exs
 
-# 엔트로피 탐지 설정
+# 엔트로피 탐지 설정 (기본 OFF — 오탐이 많아 opt-in 권장)
+# 활성화: credhound --entropy 또는 아래 enabled: true
 entropy:
-  enabled: true
+  enabled: false
   threshold: 4.5
   min_length: 20
   max_length: 120

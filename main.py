@@ -298,6 +298,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument('--output', '-o', help='결과 저장 파일 경로')
     parser.add_argument('--severity', '-s', choices=['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'], default='LOW', help='최소 심각도 필터 (기본: LOW)')
     parser.add_argument('--no-entropy', action='store_true', help='엔트로피 분석 비활성화')
+    parser.add_argument('--entropy', action='store_true', help='엔트로피 분석 활성화 (기본 OFF)')
     parser.add_argument('--unmask', action='store_true', help='credential 값 마스킹 해제 (기본: 마스킹)')
     parser.add_argument('--group', action='store_true', help='같은 credential 값을 그룹핑하여 요약')
     parser.add_argument('--cache', action='store_true', help='변경된 파일만 스캔 (mtime 캐시 기반)')
@@ -332,6 +333,8 @@ def init_scanner(args) -> CredentialScannerV2:
     scanner = CredentialScannerV2(config_path=config_path, rules_path=rules_path)
     if args.no_entropy:
         scanner.entropy_analyzer.enabled = False
+    if args.entropy:
+        scanner.entropy_analyzer.enabled = True
     if args.baseline:
         from scanner import BaselineManager
         scanner.baseline_manager = BaselineManager(args.baseline)
