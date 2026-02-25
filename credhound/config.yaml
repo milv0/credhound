@@ -65,7 +65,6 @@ exclude_dirs:
   - System            # macOS 시스템 디렉토리
   - .Trash            # macOS 휴지통
   - __MACOSX          # macOS ZIP 아카이브 메타데이터
-  - .DS_Store         # macOS Finder 메타데이터
 
   # ── 임시 / 로그 ──
   - tmp               # 임시 파일
@@ -80,8 +79,6 @@ exclude_dirs:
   # ── 로컬 설정 / 도구 ──
   - .local             # XDG 로컬 데이터 — 앱별 캐시/데이터
   - .config            # XDG 설정 디렉토리 — 앱별 설정 파일
-  - .toolbox           # Amazon 내부 도구 설치 경로 — 서드파티 SDK 소스 포함
-  - sso                # AWS SSO 캐시 — 자동 생성 임시 토큰 (하드코딩 아님)
 
 # 제외할 파일 패턴 (공통)
 exclude_patterns:
@@ -92,20 +89,20 @@ exclude_patterns:
   - ".*yarn\\.lock$"
   - ".*\\.aws/cli/cache/.*"       # AWS CLI 임시 세션 토큰 캐시 — 자동 생성, 하드코딩 아님
   - ".*\\.aws/login/cache/.*"     # AWS SSO 로그인 캐시 — 자동 생성 임시 인증 정보
+  - ".*\\.aws/sso/.*"             # AWS SSO 캐시 — 자동 생성 임시 토큰
   - ".*pnpm-lock\\.yaml$"
   - ".*Cargo\\.lock$"
   - ".*Gemfile\\.lock$"
   - ".*credential_scan_results.*\\.txt$"
   - ".*scan_results.*\\.json$"
-  - ".*scanner\\.py$"
   - ".*\\.min\\.js$"
   - ".*\\.bundle\\.js$"
   - ".*\\.wasm$"
   - ".*/out/_next/.*"
   - ".*/dist/.*"
   - ".*/build/.*"
-  - ".*rules\\.yaml$"
   - ".*/python/lib/python.*/.*\\.py$"
+  - ".*\\.DS_Store$"              # macOS Finder 메타데이터 파일
 
 # 스캔 가능한 파일 확장자
 scannable_extensions:
