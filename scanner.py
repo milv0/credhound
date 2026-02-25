@@ -288,7 +288,7 @@ _ENTROPY_FP_PATTERNS = [
 class CredentialScannerV2:
     """개선된 Credential Scanner - 업계 표준 준수"""
 
-    VERSION = "2.8.5"
+    VERSION = "2.8.6"
     TOOL_NAME = "credhound"
 
     def __init__(self, config_path: str = 'config.yaml', rules_path: str = 'rules.yaml'):
@@ -303,6 +303,7 @@ class CredentialScannerV2:
         self.rules = [Rule(rc) for rc in self.rules_config.get('rules', [])]
         self.file_patterns = self._init_file_patterns()
         self._exclude_patterns: List[re.Pattern] = []
+        self._exclude_dirs_set = set(self.config.get('exclude_dirs', []))
         for p in self.config.get('exclude_patterns', []):
             try:
                 self._exclude_patterns.append(re.compile(p, re.IGNORECASE))
@@ -386,7 +387,7 @@ class CredentialScannerV2:
         for category, pattern_info in self.file_patterns.items():
             results[category] = []
             for root, dirs, files in os.walk(scan_path, followlinks=False):
-                dirs[:] = [d for d in dirs if d not in self.config.get('exclude_dirs', [])]
+                dirs[:] = [d for d in dirs if d not in self._exclude_dirs_set]
                 for file in files:
                     file_path = Path(root) / file
                     if not file_path.is_symlink():
@@ -531,7 +532,7 @@ class CredentialScannerV2:
 
     def _collect_files(self, scan_path: str) -> List[Path]:
         files_to_scan = []
-        exclude_dirs = self.config.get('exclude_dirs', [])
+        exclude_dirs = self._exclude_dirs_set
         for root, dirs, files in os.walk(scan_path, followlinks=False):
             dirs[:] = [d for d in dirs if d not in exclude_dirs]
             for file in files:
