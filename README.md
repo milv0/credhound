@@ -90,8 +90,8 @@ PASSWORD = "test123"    # pragma: allowlist secret
 | `--group` | 같은 credential 그룹핑 | OFF |
 | `--cache` | mtime 기반 캐시 (변경 파일만 스캔) | OFF |
 | `--incremental` | Git 변경 파일만 스캔 | OFF |
-| `--no-entropy` | 엔트로피 분석 비활성화 | ON |
-| `--entropy` | 엔트로피 분석 활성화 | ON |
+| `--no-entropy` | 엔트로피 분석 비활성화 | 엔트로피 ON |
+| `--entropy` | 엔트로피 분석 활성화 (config에서 OFF한 경우) | 엔트로피 ON |
 | `--baseline` | baseline 파일 경로 | .credscan-baseline.json |
 | `--update-baseline` | 인터랙티브 baseline 업데이트 | - |
 | `--install-hook` | Pre-commit 훅 설치 | - |

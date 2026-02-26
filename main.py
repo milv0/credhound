@@ -292,7 +292,7 @@ def build_parser() -> argparse.ArgumentParser:
   credhound --update-baseline                          # False positive 관리
 """
     )
-    parser.add_argument('--version', '-V', action='version', version='credhound 2.4.0')
+    parser.add_argument('--version', '-V', action='version', version=f'credhound {CredentialScannerV2.VERSION}')
     parser.add_argument('--path', '-p', help='스캔할 경로 (기본: 현재 디렉토리)')
     parser.add_argument('--format', '-f', choices=['console', 'json', 'sarif', 'html'], default='console', help='출력 형식 (기본: console)')
     parser.add_argument('--output', '-o', help='결과 저장 파일 경로')
