@@ -22,6 +22,15 @@ from scanner import CredentialScannerV2, Finding, EXIT_CLEAN, EXIT_FINDINGS, EXI
 
 console = Console()
 
+_FORMAT_EXT = {'json': '.json', 'sarif': '.sarif', 'html': '.html'}
+
+
+def _auto_output_path(fmt: str) -> str:
+    """버전 + 타임스탬프 기반 자동 파일명 생성"""
+    ext = _FORMAT_EXT.get(fmt, '.txt')
+    ts = datetime.now().strftime('%Y%m%d_%H%M%S')
+    return f"credhound_v{CredentialScannerV2.VERSION}_{ts}{ext}"
+
 
 def format_size(size: int) -> str:
     for unit in ['B', 'KB', 'MB', 'GB']:
@@ -371,9 +380,10 @@ def run_ci_mode(args):
         if not args.output:
             print(output)
     elif args.format == 'html':
-        output = scanner.export_html(findings, file_results, args.output, mask=not args.unmask)
+        auto_path = args.output or _auto_output_path('html')
+        output = scanner.export_html(findings, file_results, auto_path, mask=not args.unmask)
         if not args.output:
-            print(output)
+            print(f"✓ HTML 리포트가 '{auto_path}'에 저장되었습니다.", file=sys.stderr)
     else:
         stats = scanner.get_stats()
         if args.group:
@@ -470,9 +480,10 @@ def run_interactive_mode(args):
         else:
             console.print(f"[green]✓ SARIF 결과가 '{args.output}'에 저장되었습니다.[/green]")
     elif args.format == 'html':
-        output = scanner.export_html(content_findings, file_results, args.output, mask=not args.unmask)
+        auto_path = args.output or _auto_output_path('html')
+        output = scanner.export_html(content_findings, file_results, auto_path, mask=not args.unmask)
         if not args.output:
-            console.print(output)
+            console.print(f"[green]✓ HTML 리포트가 '{auto_path}'에 저장되었습니다.[/green]")
         else:
             console.print(f"[green]✓ HTML 리포트가 '{args.output}'에 저장되었습니다.[/green]")
     else:
