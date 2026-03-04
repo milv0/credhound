@@ -128,9 +128,11 @@ class Rule:
         self.value_patterns = []
         for pattern_def in rule_config.get('value_patterns', []):
             try:
+                compiled = re.compile(pattern_def['pattern'])
                 self.value_patterns.append({
                     'name': pattern_def['name'],
-                    'pattern': re.compile(pattern_def['pattern'])
+                    'pattern': compiled,
+                    'prefix': self._extract_prefix(pattern_def['pattern'])
                 })
             except re.error as e:
                 logger.warning(f"잘못된 값 패턴: {pattern_def.get('pattern')} - {e}")
@@ -142,6 +144,28 @@ class Rule:
                 self.value_exclusions.append(re.compile(pattern))
             except re.error:
                 pass
+
+    @staticmethod
+    def _extract_prefix(pattern: str) -> str:
+        """regex 패턴에서 고정 prefix 추출 (사전 필터링용)"""
+        prefix = []
+        i = 0
+        while i < len(pattern):
+            c = pattern[i]
+            if c == '(' and i + 1 < len(pattern) and pattern[i + 1] == '?':
+                break  # (?i) 등 플래그 → 중단
+            if c in r'[(.+*?{^$|\\':
+                if c == '\\' and i + 1 < len(pattern) and pattern[i + 1] in 'sSdDwWbB':
+                    break  # \s, \d 등 → 중단
+                if c == '\\' and i + 1 < len(pattern):
+                    prefix.append(pattern[i + 1])  # \. → .
+                    i += 2
+                    continue
+                break
+            prefix.append(c)
+            i += 1
+        result = ''.join(prefix)
+        return result if len(result) >= 3 else ''
 
     def is_variable_match(self, var_name: str) -> bool:
         if not var_name:
@@ -288,7 +312,7 @@ _ENTROPY_FP_PATTERNS = [
 class CredentialScannerV2:
     """개선된 Credential Scanner - 업계 표준 준수"""
 
-    VERSION = "2.9.3"
+    VERSION = "2.9.4"
     TOOL_NAME = "credhound"
 
     def __init__(self, config_path: str = 'config.yaml', rules_path: str = 'rules.yaml'):
@@ -485,6 +509,8 @@ class CredentialScannerV2:
 
         for rule in self.rules:
             for pattern_def in rule.value_patterns:
+                if pattern_def['prefix'] and pattern_def['prefix'] not in content:
+                    continue
                 for match in _regex_safe_finditer(pattern_def['pattern'], content):
                     matched_text = match.group(0)
                     if not rule.is_excluded_value(matched_text):
