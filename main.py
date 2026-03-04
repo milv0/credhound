@@ -507,7 +507,7 @@ def run_interactive_mode(args):
         if Confirm.ask("\n[cyan]결과를 파일로 저장하시겠습니까?[/cyan]", default=True):
             results_dir = Path("scan_results")
             results_dir.mkdir(exist_ok=True)
-            html_path = str(results_dir / f"report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html")
+            html_path = str(results_dir / _auto_output_path('html'))
             scanner.export_html(content_findings, file_results, html_path, mask=not args.unmask)
             console.print(f"[green]✓ HTML 리포트가 '{html_path}'에 저장되었습니다.[/green]")
 
