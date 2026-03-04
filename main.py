@@ -22,7 +22,7 @@ from scanner import CredentialScannerV2, Finding, EXIT_CLEAN, EXIT_FINDINGS, EXI
 
 console = Console()
 
-_FORMAT_EXT = {'json': '.json', 'sarif': '.sarif', 'html': '.html'}
+_FORMAT_EXT = {'json': '.json', 'sarif': '.sarif', 'html': '.html', 'txt': '.txt'}
 
 
 def _auto_output_path(fmt: str) -> str:
@@ -189,17 +189,7 @@ def save_results_text(file_results: dict, content_findings: list, scan_path: str
     if not output_path:
         results_dir = Path("scan_results")
         results_dir.mkdir(exist_ok=True)
-        existing = list(results_dir.glob("credential_scan_results_v2_*.txt"))
-        numbers = []
-        for fp in existing:
-            try:
-                numbers.append(int(fp.stem.split('_')[-1]))
-            except Exception:
-                continue
-        next_num = max(numbers) + 1 if numbers else 1
-        default_filename = f"credential_scan_results_v2_{next_num}.txt"
-        output_file = Prompt.ask("[cyan]저장할 파일명[/cyan]", default=default_filename)
-        output_path = str(results_dir / output_file)
+        output_path = str(results_dir / _auto_output_path('txt'))
 
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(f"Credential Scan Results\n")
